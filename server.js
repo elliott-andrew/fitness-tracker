@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3000
 
 const htmlRouter = require("./routes/html-routes.js");
+const apiRouter = require("./routes/api-routes.js");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/", htmlRouter);
+app.use("/", apiRouter);
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/budget", {
   useNewUrlParser: true,
