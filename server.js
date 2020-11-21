@@ -13,13 +13,13 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-app.use("/", htmlRouter);
-app.use("/", apiRouter);
-
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/budget", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
+
+app.use("/", htmlRouter);
+app.use(apiRouter);
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
