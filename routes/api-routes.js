@@ -23,23 +23,31 @@ router.get("/api/workouts", (req, res) => {
       });
   });
 
-  router.put("/api/workouts/:id", ({ params }, res) => {   
-    Exercise.update(
+  router.delete("/api/workouts/:id", (req, res) =>{
+    Exercise.remove(
       {
-        _id: mongojs.ObjectId(params.id)
+        _id: mongojs.ObjectID(req.params.id)
       },
-      {
-        $set: {
-          exercises: body
+      (error, data) => {
+        if (error) {
+          res.send(error);
+        } else {
+          res.send(data);
         }
       }
+    );
+  })
+  
+  router.put("/api/workouts/:id", (req, res) => {
+    Exercise.findByIdAndUpdate(
+      req.params._id,
+      { $push: { exercises: req.body } },
     )
-    .then(dbExercise => {
-      res.json(dbExercise);
+    .then(dbWorkout => {
+      res.json(dbWorkout);
     })
     .catch(err => {
-      res.status(400).json(err);
+      res.json(err);
     });
   });
-  
   module.exports = router;
